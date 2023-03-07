@@ -105,9 +105,9 @@ public class GrpcClientProtocolClient implements Closeable {
     metricClientInterceptor = new MetricClientInterceptor(getName());
 
     final String clientAddress = Optional.ofNullable(target.getClientAddress())
-        .filter(x -> !x.isEmpty()).orElse(target.getAddress());
+        .filter(x -> !x.isEmpty()).map(x -> x.contains(":") ? "[" + x + "]" : x).orElse(target.getAddress());
     final String adminAddress = Optional.ofNullable(target.getAdminAddress())
-        .filter(x -> !x.isEmpty()).orElse(target.getAddress());
+        .filter(x -> !x.isEmpty()).map(x -> x.contains(":") ? "[" + x + "]" : x).orElse(target.getAddress());
     final boolean separateAdminChannel = !Objects.equals(clientAddress, adminAddress);
 
     clientChannel = buildChannel(clientAddress, clientTlsConfig,

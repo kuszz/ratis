@@ -34,7 +34,7 @@ public class JmxRegister {
   static ObjectName tryRegister(String name, Object mBean) {
     final ObjectName objectName;
     try {
-      objectName = new ObjectName(name);
+      objectName = new ObjectName(name.replace(":", "."));
       ManagementFactory.getPlatformMBeanServer().registerMBean(mBean, objectName);
     } catch (Exception e) {
       LOG.error("Failed to register JMX Bean with name " + name, e);
